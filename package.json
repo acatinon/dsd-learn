@@ -6,8 +6,8 @@
     "authorView": false
   },
   "scripts": {
-    "start": "snowpack dev",
-    "buildCss": "postcss --use tailwindcss autoprefixer -o build/main.css styles.css",
+    "start": "idyll",
+    "buildCss": "postcss --use tailwindcss autoprefixer -o build/static/idyll_styles.css styles.css",
     "build": "snowpack build"
   },
   "dependencies": {
