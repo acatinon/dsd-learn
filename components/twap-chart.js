@@ -8,6 +8,8 @@ class TwapChart extends D3Component {
   initialize(node, props) {
     var margin = {top: 20, right: 40, bottom: 20, left: 40};
 
+    console.log(d3.version);
+
     var dataSet = [
       { x: 0, y: 0.8},
       { x: 0.5, y: 0.6},
@@ -15,7 +17,7 @@ class TwapChart extends D3Component {
       { x: 1.5, y: 1.4},
       { x: 2, y: 1.2},
     ];
-
+    
     var xScale = d3.scaleLinear()
       .domain([0, 2]) // input
       .range([0, 500]); // output
@@ -36,26 +38,38 @@ class TwapChart extends D3Component {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    const clip = svg
+      .append("defs")
+      .append("svg:clipPath")
+      .attr("id", "clip")
+      .append("svg:rect")
+      .attr("width", 500)
+      .attr("height", 200)
+      .attr("x", 0)
+      .attr("y", 0);
+
+    const chartContent = svg.append("g").attr("clip-path", "url(#clip)");
+
     function dragstarted(d) {
       d3.select(this)
         .raise()
         .classed("active", true);
     }
 
-    function dragged(d) {
+    function dragged(event, d) {
       const minY = 5;
-      const maxY = 300;
+      const maxY = 200;
       // d[0] = xScale.invert(d3.event.x);
-      if (Math.sign(d3.event.y) !== -1 && d3.event.y < 300) {
-        d[1] = yScale.invert(d3.event.y);
+      if (Math.sign(event.y) !== -1 && event.y < 200) {
+        d.y = yScale.invert(event.y);
       }
 
+      var cy = d3.select(this).attr("cy");
+
       d3.select(this)
-        .attr("cy", (d.y = Math.max(minY, Math.min(maxY, d3.event.y))));
+        .attr("cy", Math.max(minY, Math.min(maxY, event.y)));
       
-      var p = svg.select("path");
-      debugger;
-      //.attr("d", line);
+      chartContent.select("path").attr("d", line);
     }
 
     function dragended(d) {
@@ -68,8 +82,6 @@ class TwapChart extends D3Component {
       .on("drag", dragged)
       .on("end", dragended);
 
-
-
     svg.append("g")
       .attr("transform", "translate(0," + 200 + ")")
       .call(d3.axisBottom(xScale).tickValues([0, 1, 2])); // Create an axis component with d3.axisBottom
@@ -78,31 +90,26 @@ class TwapChart extends D3Component {
     svg.append("g")
       .call(d3.axisLeft(yScale).tickValues([0.5, 1, 1.5])); // Create an axis component with d3.axisLeft
 
-    svg.append("path")
+    chartContent.append("path")
       .datum(dataSet) // 10. Binds data to the line 
       .attr("class", "line") // Assign a class for styling 
       .attr("d", line); // 11. Calls the line generator 
 
-    svg.selectAll(".dot")
+    chartContent.selectAll(".dot")
       .data(dataSet)
-      .enter().append("circle") // Uses the enter().append() method
+      .enter()
+      .append("circle") // Uses the enter().append() method
       .attr("class", "dot") // Assign a class for styling
       .attr("cx", function(d) { return xScale(d.x) })
       .attr("cy", function(d) { return yScale(d.y) })
       .attr("r", 5);
 
-      svg.selectAll("circle").call(drag);
+    chartContent.selectAll("circle").call(drag);
 
-      this.svg = svg;
+    this.svg = svg;
   }
 
   update(props, oldProps) {
-    this.svg
-      .selectAll('circle')
-      .transition()
-      .duration(750)
-      .attr('cx', Math.random() * size)
-      .attr('cy', Math.random() * size);
   }
 }
 
