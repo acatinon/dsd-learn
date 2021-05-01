@@ -16,6 +16,12 @@ data-driven graphics.
 
 Configuration can be done via the `idyll` field in `package.json`.
 
-[Graphic ]
-  [TwapChart /]
+[var name:'twap' value:1 /]
+[data name:'twapPoints' source:'twap.json' /]
+[Twap value:twap source:twapPoints /]
+
+[Graphic]
+  [TwapChart points:twapPoints /]
 [/Graphic]
+
+[Display value:twap /]

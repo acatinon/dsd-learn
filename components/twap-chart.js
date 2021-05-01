@@ -7,19 +7,10 @@ const size = 600;
 class TwapChart extends D3Component {
   initialize(node, props) {
     var margin = {top: 20, right: 40, bottom: 20, left: 40};
-
-    console.log(d3.version);
-
-    var dataSet = [
-      { x: 0, y: 0.8},
-      { x: 0.5, y: 0.6},
-      { x: 1, y: 1},
-      { x: 1.5, y: 1.4},
-      { x: 2, y: 1.2},
-    ];
+    var dataSet = props.points;
     
     var xScale = d3.scaleLinear()
-      .domain([0, 2]) // input
+      .domain([-0.05, 2.05]) // input
       .range([0, 500]); // output
 
 
@@ -28,8 +19,8 @@ class TwapChart extends D3Component {
       .range([200, 0]); // output
 
     var line = d3.line()
-      .x(function(d) { return xScale(d.x); }) // set the x values for the line generator
-      .y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
+      .x(function(d) { return xScale(d.cx); }) // set the x values for the line generator
+      .y(function(d) { return yScale(d.cy); }) // set the y values for the line generator 
       .curve(d3.curveNatural); // apply smoothing to the line
 
     var svg = d3.select(node).append('svg')
@@ -59,12 +50,18 @@ class TwapChart extends D3Component {
     function dragged(event, d) {
       const minY = 5;
       const maxY = 200;
-      // d[0] = xScale.invert(d3.event.x);
+      
       if (Math.sign(event.y) !== -1 && event.y < 200) {
-        d.y = yScale.invert(event.y);
+        d.cy = yScale.invert(event.y);
       }
 
-      var cy = d3.select(this).attr("cy");
+      props.updateProps({
+        points: []
+      });
+
+      props.updateProps({
+        points: dataSet
+      });
 
       d3.select(this)
         .attr("cy", Math.max(minY, Math.min(maxY, event.y)));
@@ -100,8 +97,8 @@ class TwapChart extends D3Component {
       .enter()
       .append("circle") // Uses the enter().append() method
       .attr("class", "dot") // Assign a class for styling
-      .attr("cx", function(d) { return xScale(d.x) })
-      .attr("cy", function(d) { return yScale(d.y) })
+      .attr("cx", function(d) { return xScale(d.cx) })
+      .attr("cy", function(d) { return yScale(d.cy) })
       .attr("r", 5);
 
     chartContent.selectAll("circle").call(drag);
