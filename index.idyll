@@ -5,16 +5,19 @@
   subtitle:"Welcome to Idyll. Open index.idyll to start writing"
    /]
 
-## Introduction
+## What is Dynamic Set Dollar?
 
-This is an Idyll scrolly-telling post. It is generated via
-the file `index.idyll`. To compile this post using
-idyll, run the command `idyll` inside of this directory.
+Dynamic Set Dollar is a fully decentralized stablecoin that unlike centralized coins, e.g. USDT, 
+has no 1:1 backing through a centralized USD treasury. To be highly capital efficient it does not 
+use any collateral, like the main competitors DAI or sUSD. The voluntary elastic supply mechanic 
+is different from Ampleforth (AMPL) and Based (BASED). It is inspired by perpetual futures 
+funding rates Inspired by perpetual futures funding rates to achieve (near) mechanism symmetry 
+between expansions and contractions and thus maintain peg to USD.
 
-Idyll posts are designed to support interaction and
-data-driven graphics.
+## Protocol Core Dynamics
 
-Configuration can be done via the `idyll` field in `package.json`.
+To maintain the 1:1 USD peg, DSD features 12 epochs per day in which the voluntary supply change is managed. 
+Per epoch the supply can extend, or contract by a maximum of 2%. 
 
 [var name:'twap' value:1 /]
 [data name:'twapPoints' source:'twap.json' /]
