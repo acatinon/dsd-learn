@@ -6,18 +6,20 @@ const fs = require('fs');
 
 var idyll = Idyll({
   inputFile: 'index.idyll',
-  live: (process.argv[2] == "--watch")
+  watch: (process.argv[2] == "--watch")
 });
+
+
 
 idyll.build()
   .on('update', () => {
-    fs.readFile('src/app.css', (err, css) => {
+    fs.readFile('styles.css', (err, css) => {
       postcss([tailwind, autoprefixer])
-        .process(css, { from: 'styles.css', to: 'dest/app.css' })
+        .process(css, { from: 'styles.css', to: 'build/static/idyll_styles.css' })
         .then(result => {
-          fs.writeFile('build/styles.css', result.css, () => true)
+          fs.writeFile('build/static/idyll_styles.css', result.css, () => true)
           if (result.map) {
-            fs.writeFile('dest/styles.css.map', result.map.toString(), () => true)
+            fs.writeFile('build/static/idyll_styles.css.map', result.map.toString(), () => true)
           }
         })
     })
