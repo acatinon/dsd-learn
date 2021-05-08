@@ -27,11 +27,18 @@
 
 .line {
   fill: none;
-  stroke: #ffab00;
-  stroke-width: 3;
+  stroke: theme('colors.primary.light');
+  stroke-width: 2;
+}
+
+.twap-line {
+  fill: none;
+  stroke: theme('colors.secondary.light');
+  stroke-dasharray: 8,8;
+  stroke-width: 2;
 }
 
 .dot {
-  fill: #ffab00;
+  fill: theme('colors.primary.light');
   stroke: #fff;
 }

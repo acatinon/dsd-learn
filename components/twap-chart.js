@@ -7,7 +7,10 @@ const size = 600;
 class TwapChart extends D3Component {
   initialize(node, props) {
     var margin = {top: 20, right: 40, bottom: 20, left: 40};
-    var dataSet = props.points;
+    var pointsData = props.points;
+    var twap = props.twap;
+    
+    this.twapData = [[0, twap], [2, twap]];
     
     var xScale = d3.scaleLinear()
       .domain([-0.05, 2.05]) // input
@@ -19,9 +22,13 @@ class TwapChart extends D3Component {
       .range([200, 0]); // output
 
     var line = d3.line()
-      .x(function(d) { return xScale(d.cx); }) // set the x values for the line generator
-      .y(function(d) { return yScale(d.cy); }) // set the y values for the line generator 
-      .curve(d3.curveNatural); // apply smoothing to the line
+      .x(function(d) { return xScale(d.cx); })
+      .y(function(d) { return yScale(d.cy); })
+      .curve(d3.curveNatural);
+
+    this.twapLine = d3.line()
+      .x(function(d) { return xScale(d[0]); })
+      .y(function(d) { return yScale(d[1]); })
 
     var svg = d3.select(node).append('svg')
       .attr("width", 500 + margin.left + margin.right)
@@ -60,7 +67,7 @@ class TwapChart extends D3Component {
       });
 
       props.updateProps({
-        points: dataSet
+        points: pointsData
       });
 
       d3.select(this)
@@ -88,12 +95,17 @@ class TwapChart extends D3Component {
       .call(d3.axisLeft(yScale).tickValues([0.5, 1, 1.5])); // Create an axis component with d3.axisLeft
 
     chartContent.append("path")
-      .datum(dataSet) // 10. Binds data to the line 
-      .attr("class", "line") // Assign a class for styling 
-      .attr("d", line); // 11. Calls the line generator 
+      .datum(pointsData)
+      .attr("class", "line")
+      .attr("d", line);
+
+    chartContent.append("path")
+      .datum(this.twapData)
+      .attr("class", "twap-line") 
+      .attr("d", this.twapLine);
 
     chartContent.selectAll(".dot")
-      .data(dataSet)
+      .data(pointsData)
       .enter()
       .append("circle") // Uses the enter().append() method
       .attr("class", "dot") // Assign a class for styling
@@ -107,6 +119,10 @@ class TwapChart extends D3Component {
   }
 
   update(props, oldProps) {
+    this.twapData[0][1] = props.twap;
+    this.twapData[1][1] = props.twap;
+
+    this.svg.select(".twap-line").attr("d", this.twapLine);
   }
 }
 

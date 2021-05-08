@@ -31,12 +31,12 @@ because it can be easily manipulated by an attacker. Instead, the protocol use t
 The graph below represent the DSD price within an epoch. You can try to manipulate the price by
 dragging some points and see how it impacts the TWAP.
 
-[var name:'twap' /]
+[var name:'twap' value:1.04 /]
 [data name:'twapPoints' source:'twap.json' /]
 [Twap value:twap source:twapPoints /]
 
 [Graphic]
-  [TwapChart points:twapPoints /]
+  [TwapChart points:twapPoints twap:twap /]
 [/Graphic]
 
 [Display value:twap /]
