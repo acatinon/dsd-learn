@@ -6,10 +6,11 @@
     "authorView": false
   },
   "scripts": {
-    "start": "node scripts/build.js --watch",
+    "start": "node scripts/watch.js",
     "build": "node scripts/build.js"
   },
   "dependencies": {
+    "chokidar": "^3.5.1",
     "d3": "^6.7.0",
     "idyll": "^5.5.3",
     "idyll-d3-component": "^2.1.0"

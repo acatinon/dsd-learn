@@ -6,7 +6,6 @@ const fs = require('fs');
 
 var idyll = Idyll({
   inputFile: 'index.idyll',
-  watch: (process.argv[2] == "--watch")
 });
 
 
