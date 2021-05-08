@@ -16,10 +16,22 @@ between expansions and contractions and thus maintain peg to USD.
 
 ## Protocol Core Dynamics
 
-To maintain the 1:1 USD peg, DSD features 12 epochs per day in which the voluntary supply change is managed. 
-Per epoch the supply can extend, or contract by a maximum of 2%. 
+To maintain the 1:1 USD peg, DSD rely on an elastic supply mechanism. When the DSD price is above 
+1 USD, the protocol is in expansion and new DSD are minted, causing selling pressure. When the DSD 
+price is below 1 USD, the protocol is in contraction and aims restore the peg by reducing the DSD 
+circulating supply.
 
-[var name:'twap' value:1 /]
+## Epochs, TWAP, expansions and contractions
+
+To determine if we are in contraction or expansion, the protocol can't rely on the DSD spot price,
+because it can be easily manipulated by an attacker. Instead, the protocol use the 
+[link text:"Uniswap Time-Weighted Average Price" url:"https://uniswap.org/docs/v2/core-concepts/oracles/" /] 
+(TWAP) feature to sample the price feed at a 2 hours interval. This interval is called an epoch.
+
+The graph below represent the DSD price within an epoch. You can try to manipulate the price by
+dragging some points and see how it impacts the TWAP.
+
+[var name:'twap' /]
 [data name:'twapPoints' source:'twap.json' /]
 [Twap value:twap source:twapPoints /]
 
