@@ -2,7 +2,6 @@
   "idyll": {
     "theme": "none",
     "layout": "none",
-    "css": "styles.css",
     "authorView": false
   },
   "scripts": {

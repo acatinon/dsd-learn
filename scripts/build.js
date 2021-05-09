@@ -6,6 +6,7 @@ const fs = require('fs');
 
 var idyll = Idyll({
   inputFile: 'index.idyll',
+  template: "main.html",
 });
 
 
@@ -14,11 +15,11 @@ idyll.build()
   .on('update', () => {
     fs.readFile('styles.css', (err, css) => {
       postcss([tailwind, autoprefixer])
-        .process(css, { from: 'styles.css', to: 'build/static/idyll_styles.css' })
+        .process(css, { from: 'styles.css', to: 'build/static/main.css' })
         .then(result => {
-          fs.writeFile('build/static/idyll_styles.css', result.css, () => true)
+          fs.writeFile('build/static/main.css', result.css, () => true)
           if (result.map) {
-            fs.writeFile('build/static/idyll_styles.css.map', result.map.toString(), () => true)
+            fs.writeFile('build/static/main.css.map', result.map.toString(), () => true)
           }
         })
     })
