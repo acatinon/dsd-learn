@@ -8,6 +8,14 @@
     @apply container;
   }
 
+  .idyll-dynamic {
+    @apply border-primary border-b-2 border-dashed cursor-ew-resize;
+  }
+
+  .idyll-display {
+    @apply bg-primary bg-opacity-10 p-0.5;
+  }
+
   h1 {
     @apply text-2xl mt-8;
   }
